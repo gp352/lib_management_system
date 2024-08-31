@@ -60,6 +60,31 @@ def test_return_nonexistent_book():
     with pytest.raises(KeyError) as excinfo:
         library.returnbook("nonexistent_isbn")
     assert excinfo.value.args[0] == "Book is not there"
+def test_view_no_books_available():
+    library = Library()
+    available_books = library.view_available_books()
+    assert len(available_books) == 0  # No books added yet
+
+def test_view_all_books_available():
+    library = Library()
+    library.add_book("1111111111", "Harry Potter", "Author A", 2020)
+    library.add_book("2222222222", "5 AM CLUB", "Author B", 2021)
+    available_books = library.view_available_books()
+    assert len(available_books) == 2
+    assert available_books[0]['title'] == "Harry Potter"
+    assert available_books[1]['title'] == "5 AM CLUB"
+
+def test_view_some_books_borrowed():
+    library = Library()
+    library.add_book("1111111111", "Harry Potter", "Author A", 2020)
+    library.add_book("2222222222", "5 AM CLUB", "Author B", 2021)
+    library.add_book("3333333333", "Bhagvad Gita", "Author C", 2022)
+    library.borrow_book("3333333333")
+    available_books = library.view_available_books()
+    assert len(available_books) == 2
+    assert available_books[0]['title'] == "Harry Potter"
+    assert available_books[1]['title'] == "5 AM CLUB"
+
     
 
 
