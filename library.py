@@ -19,3 +19,11 @@ class Library:
         if book['borrowed']:
             raise ValueError("Book borrowed already")
         book['borrowed'] = True
+    
+    def returnbook(self, isbn):
+        book = self.get_book(isbn)
+        if book is None:
+            raise KeyError("Book is not there")
+        if not book['borrowed']:
+            raise ValueError("Book is already in library")
+        book['borrowed'] = False
