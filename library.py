@@ -27,3 +27,6 @@ class Library:
         if not book['borrowed']:
             raise ValueError("Book is already in library")
         book['borrowed'] = False
+        
+    def view_available_books(self):
+        return [book for book in self.books.values() if not book['borrowed']]
