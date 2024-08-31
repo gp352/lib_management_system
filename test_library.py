@@ -38,4 +38,28 @@ def test_borrow_nonexistent_book():
     with pytest.raises(KeyError) as excinfo:
         library.borrow_book("nonexistent_isbn")
     assert excinfo.value.args[0] == "Book is not there"
+    
+def test_return_book_executed():
+    library = Library()
+    library.add_book("15643219656", "Book Name", "Author", 2022)
+    library.borrow_book("15643219656")
+    library.returnbook("15643219656")
+    book = library.get_book("15643219656")
+    assert book is not None
+    assert book.get('borrowed') is False
+
+def test_return_book_not_borrowed():
+    library = Library()
+    library.add_book("15643219656", "Book Name", "Author", 2022)
+    with pytest.raises(ValueError) as excinfo:
+        library.returnbook("15643219656")
+    assert str(excinfo.value) == "Book is already in library"
+
+def test_return_nonexistent_book():
+    library = Library()
+    with pytest.raises(KeyError) as excinfo:
+        library.returnbook("nonexistent_isbn")
+    assert excinfo.value.args[0] == "Book is not there"
+    
+
 
